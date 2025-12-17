@@ -6,9 +6,13 @@ public class User
     @Id
     private Long id;
     private String fullName;
-    private String Password;
     @column(unqiue="true")
-    private String Email;
+    private String email;
+    private String password;
+    private String role;
+    @PrePersist
+    
+    
 
 
 }
