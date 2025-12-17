@@ -1,4 +1,4 @@
-public class Vendor
+public class DocumentTypeService
 {
-    
+
 }
