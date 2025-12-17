@@ -5,6 +5,7 @@ import jakarta.persistence.LocalDateTime;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PrePersist;
 
 @Entity
 
@@ -14,7 +15,7 @@ public class User
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String fullName;
-    @Column(unqiue="true")
+    @Column(unique="true")
     private String email;
     private String password;
     private String role;
@@ -44,7 +45,7 @@ public class User
     {
         this.email=email;
     }
-    public string getPassword()
+    public String getPassword()
     {
         return password;
     }
@@ -52,7 +53,7 @@ public class User
     {
         this.password=password;
     }
-    public string getRole()
+    public String getRole()
     {
         return role;
     }
