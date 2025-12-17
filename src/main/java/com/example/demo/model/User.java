@@ -4,6 +4,7 @@ import jakarta.persistance.Id;
 public class User
 {
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String fullName;
     @column(unqiue="true")
@@ -11,7 +12,7 @@ public class User
     private String password;
     private String role;
     @PrePersist
-    
+
     
 
 
