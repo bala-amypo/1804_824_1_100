@@ -13,8 +13,30 @@ public class User
     private String role;
     private LocalDateTime createdAt;
 
-    public void getId(Long id)
-    
+    public Long getID()
+    {
+        return  id;
+    }
+    public void setId(Long id)
+    {
+        this.id=id;
+    }
+    public String getFullName()
+    {
+        return fullName;
+    }
+    public void setFullName(String fullName)
+    {
+        this.fullName=fullName;
+    }
+    public String getEmail()
+    {
+        return email;
+    }
+    public void setEmail(){
+        this.email=email;
+    }
+    public string get
     
 
 
