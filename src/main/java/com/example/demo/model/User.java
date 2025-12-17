@@ -56,6 +56,17 @@ public class User
     {
         this.role=role;
     }
+    @PrePersist
+    protected void onCreate()
+    {
+        this.createdAt=LocalDateTime.now();
+    }
+    public User()
+    {
+        this.id=id;
+        this.
+
+    }
      
     
 
