@@ -1,5 +1,8 @@
 import jakarta.persistance.Column;
 import jakarta.persistance.Id;
+import jakarta.persistance.PrePersist;
+import jakarta.persistance.GeneratedValue;
+
 
 public class User
 {
@@ -33,10 +36,27 @@ public class User
     {
         return email;
     }
-    public void setEmail(){
+    public void setEmail(String email)
+    {
         this.email=email;
     }
-    public string get
+    public string getPassword()
+    {
+        return password;
+    }
+    public void setPassword(String password)
+    {
+        this.password=password;
+    }
+    public string getRole()
+    {
+        return role;
+    }
+    public void setRole(String role)
+    {
+        this.role=role;
+    }
+     
     
 
 
