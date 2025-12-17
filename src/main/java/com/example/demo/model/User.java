@@ -1,4 +1,4 @@
-import jakarta.persistance.column;
+import jakarta.persistance.Column;
 import jakarta.persistance.Id;
 
 public class User
@@ -7,7 +7,7 @@ public class User
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String fullName;
-    @column(unqiue="true")
+    @Column(unqiue="true")
     private String email;
     private String password;
     private String role;
