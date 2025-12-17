@@ -1,7 +1,7 @@
-import jakarta.persistance.Column;
-import jakarta.persistance.Id;
-import jakarta.persistance.LocalDateTime;
-import jakarta.persistance.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.LocalDateTime;
+import jakarta.persistence.GeneratedValue;
 
 
 public class User
@@ -61,7 +61,7 @@ public class User
     {
         this.createdAt=LocalDateTime.now();
     }
-    public User()
+    public User(Long id,String fullName,String email,String password,String role,LocalDateTime createdAt)
     {
         this.id=id;
         this.fullName=fullName;
