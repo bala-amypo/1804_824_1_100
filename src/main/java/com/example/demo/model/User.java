@@ -11,8 +11,10 @@ public class User
     private String email;
     private String password;
     private String role;
-    @PrePersist
+    private LocalDateTime createdAt;
 
+    public void getId(Long id)
+    
     
 
 
