@@ -1,6 +1,6 @@
 import jakarta.persistance.Column;
 import jakarta.persistance.Id;
-import jakarta.persistance.PrePersist;
+import jakarta.persistance.LocalDateTime;
 import jakarta.persistance.GeneratedValue;
 
 
