@@ -64,10 +64,17 @@ public class User
     public User()
     {
         this.id=id;
-        this.
+        this.fullName=fullName;
+        this.email=email;
+        this.password=password;
+        this.role=role;
+        this.createdAt=createdAt;
+    }
+    public User()
+    {
 
     }
-     
+     `
     
 
 
