@@ -1,6 +1,6 @@
 package com.example.demo.service.implement;
 import com.example.demo.service.UserService;
-import com.example.demo.Entity.User;
+import com.example.demo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserImplement implements UserService{
