@@ -13,7 +13,7 @@ public class UserImplement implements UserService{
     }
     String getUser(Long id)
     {
-        return obj.getById(id);
+        return obj.findById(id);
     }
 
 }
