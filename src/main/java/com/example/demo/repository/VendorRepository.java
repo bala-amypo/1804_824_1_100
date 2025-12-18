@@ -1,5 +1,5 @@
 package com.example.demo.repository;
-package com.example.demo.model.Vendor;
+import com.example.demo.model.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
