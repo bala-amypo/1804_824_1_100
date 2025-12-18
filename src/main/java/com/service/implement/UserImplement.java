@@ -12,13 +12,13 @@ public class UserImplement implements UserService{
     public User register(User user){
         return obj.save(user);
     }
-    // public User findByEmail(String email){
-    //     return obj.findByEmail(email);
-    // }
+    public User findByEmail(String email){
+        return obj.findByEmail(email);
+     }
 
-    // public User getUser(Long id)
-    // {
-    //     return obj.findById(id);
-    // }
+     public User getUser(Long id)
+     {
+         return obj.findById(id);
+     }
 
 }
