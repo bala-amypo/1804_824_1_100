@@ -30,7 +30,7 @@ public class Vendor
     {
         return vendorName;
     }
-    public void setvendorName(String fullName)
+    public void setvendorName(String vendorName)
     {
         this.vendorName=vendorName;
     }

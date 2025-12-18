@@ -6,14 +6,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrePersist;
-public class Vendor
+public class DocumentType
 {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(unique=true)
-    private String vendorName;
-    private String email;
+    private String typeName;
+    private String description;
     private String phone;
     private String industry;
     private LocalDateTime createdAt;
@@ -26,21 +26,21 @@ public class Vendor
     {
         this.id=id;
     }
-    public String getvendorName()
+    public String gettypeName()
     {
-        return vendorName;
+        return typeName;
     }
-    public void setvendorName(String fullName)
+    public void settypeName(String typeName)
     {
-        this.vendorName=vendorName;
+        this.typeName=typeName;
     }
-    public String getEmail()
+    public String getdescription()
     {
-        return email;
+        return description;
     }
-    public void setEmail(String email)
+    public void setdescription(String description)
     {
-        this.email=email;
+        this.description=description;
     }
     public String getPhone()
     {
@@ -63,16 +63,16 @@ public class Vendor
     {
         this.createdAt=LocalDateTime.now();
     }
-    public Vendor(Long id,String vendorName,String email,String phone,String industry,LocalDateTime createdAt)
+    public DocumentType(Long id,String vendorName,String description,String phone,String industry,LocalDateTime createdAt)
     {
         this.id=id;
         this.vendorName=vendorName;
-        this.email=email;
+        this.description=description;
         this.phone=phone;
         this.industry=industry;
         this.createdAt=createdAt;
     }
-    public Vendor()
+    public DocumentType()
     {
 
     }
