@@ -4,6 +4,8 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
+
 @Service
 public class UserImplement implements UserService{
     @Autowired
@@ -11,12 +13,12 @@ public class UserImplement implements UserService{
     public User register(User user){
         return obj.save(user);
     }
-    public User findByEmail(User email){
+    public Optional<User> findByEmail(User email){
         return obj.findByEmail(email).orElse(null);
     }
-    public User getUser(User id)
+    public Optional<User> getUser(User id)
     {
-        return obj.findById(id).orElse(Null);
+        return obj.findById(id).orElse(null);
     }
 
 }
