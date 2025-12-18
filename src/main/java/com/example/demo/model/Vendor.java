@@ -28,11 +28,11 @@ public class Vendor
     }
     public String getvendorName()
     {
-        return fullName;
+        return vendorName;
     }
     public void setvendorName(String fullName)
     {
-        this.fullName=fullName;
+        this.vendorName=vendorName;
     }
     public String getEmail()
     {
@@ -44,11 +44,11 @@ public class Vendor
     }
     public String getPhone()
     {
-        return password;
+        return phone;
     }
     public void setPhone(String password)
     {
-        this.password=password;
+        this.phone=phone;
     }
     public String getIndustry()
     {
@@ -63,7 +63,7 @@ public class Vendor
     {
         this.createdAt=LocalDateTime.now();
     }
-    public User(Long id,String vendorName,String email,String phone,String industry,LocalDateTime createdAt)
+    public Vendor(Long id,String vendorName,String email,String phone,String industry,LocalDateTime createdAt)
     {
         this.id=id;
         this.vendorName=vendorName;
@@ -72,7 +72,7 @@ public class Vendor
         this.industry=industry;
         this.createdAt=createdAt;
     }
-    public User()
+    public Vendor()
     {
 
     }
