@@ -14,12 +14,12 @@ public class UserImplement implements UserService{
         return obj.save(user);
     }
     public User getByEmail(String email){
-        return obj.findById(email).orElse(null);
+        return obj.findByEmail(email);
     }
 
     public User getUser(Long id)
     {
-        return obj.findById(id).orElse(null);
+        return obj.findById(id);
     }
 
 }
