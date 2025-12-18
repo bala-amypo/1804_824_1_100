@@ -2,7 +2,8 @@ public class UserController
 {
     @Autowired
     UserService obj;
-    @PostMapping("/register")
+    
+    ostMapping("/register")
     public User UserRegister(User user)
     {
         return obj.register(user);
