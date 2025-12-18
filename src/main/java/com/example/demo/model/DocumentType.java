@@ -14,7 +14,7 @@ public class DocumentType
     @Column(unique=true)
     private String typeName;
     private String description;
-    private String phone;
+    private Boolean required;
     private String industry;
     private LocalDateTime createdAt;
 
@@ -42,15 +42,15 @@ public class DocumentType
     {
         this.description=description;
     }
-    public String getPhone()
+    public Boolean getrequired()
     {
-        return phone;
+        return required;
     }
-    public void setPhone(String password)
+    public void setrequired(Boolean required)
     {
-        this.phone=phone;
+        this.required=required;
     }
-    public String getIndustry()
+    public int getweight()
     {
         return industry;
     }

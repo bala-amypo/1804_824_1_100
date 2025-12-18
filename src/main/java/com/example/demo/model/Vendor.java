@@ -46,7 +46,7 @@ public class Vendor
     {
         return phone;
     }
-    public void setPhone(String password)
+    public void setPhone(String phone)
     {
         this.phone=phone;
     }
@@ -54,7 +54,7 @@ public class Vendor
     {
         return industry;
     }
-    public void setIndustry(String role)
+    public void setIndustry(String industry)
     {
         this.industry=industry;
     }
