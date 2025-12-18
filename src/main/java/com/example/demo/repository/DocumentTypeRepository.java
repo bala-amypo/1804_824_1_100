@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface extends JpaRepository<User,Long>
+public interface extends JpaRepository<DocumentType,Long>
 {
 
 }
