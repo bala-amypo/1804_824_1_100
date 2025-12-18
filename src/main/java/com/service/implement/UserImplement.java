@@ -1,3 +1,5 @@
+package com.example.demo.service.implement;
+import com.example.demo.service.
 public class UserImplement implements UserService{
     @AutoWired
     UserRepository obj;
