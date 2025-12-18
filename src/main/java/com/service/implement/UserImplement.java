@@ -1,7 +1,11 @@
 public class UserImplement implements UserService{
     @AutoWired
-    UserService obj;
-    String findByEmail(String email){
-        return ob
+    UseRepository obj;
+    User register(User user){
+        return obj.save(user);
     }
+    String findByEmail(String email){
+        return obj.getById(email);
+    }
+
 }
