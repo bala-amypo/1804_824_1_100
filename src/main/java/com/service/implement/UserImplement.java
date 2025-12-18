@@ -3,17 +3,18 @@ import com.example.demo.service.UserService;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.spring
+@Service
 public class UserImplement implements UserService{
     @Autowired
     UserRepository obj;
-    User register(User user){
+    public User register(User user){
         return obj.save(user);
     }
-    String findByEmail(String email){
+    public String findByEmail(String email){
         return obj.findById(email);
     }
-    String getUser(Long id)
+    public String getUser(Long id)
     {
         return obj.findById(id);
     }
