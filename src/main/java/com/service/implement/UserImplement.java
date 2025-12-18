@@ -5,7 +5,7 @@ import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserImplement implements UserService{
-    @AutoWired
+    @Autowired
     UserRepository obj;
     User register(User user){
         return obj.save(user);
