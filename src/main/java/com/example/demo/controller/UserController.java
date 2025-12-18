@@ -1,3 +1,6 @@
+package com.example.demo.controller;
+import org.spring
+@RestController
 public class UserController
 {
     @Autowired
@@ -8,7 +11,7 @@ public class UserController
     {
         return obj.register(user);
     }
-    
+
 
     
 }
