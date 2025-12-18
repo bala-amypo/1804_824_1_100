@@ -1,3 +1,4 @@
 public interface UserService{
-    User findByEmail(User )
+    String  findByEmail(String email );
+    Long getUser(Long id);
 }
