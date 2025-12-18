@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
