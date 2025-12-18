@@ -12,7 +12,7 @@ public class Vendor
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(unique=true)
-    private String typeName;
+    private String vendorName;
     private String email;
     private String phone;
     private String industry;
@@ -26,13 +26,13 @@ public class Vendor
     {
         this.id=id;
     }
-    public String gettypeName()
+    public String getvendorName()
     {
-        return typeName;
+        return vendorName;
     }
-    public void settypeName(String fullName)
+    public void setvendorName(String fullName)
     {
-        this.typeName=typeName;
+        this.vendorName=vendorName;
     }
     public String getEmail()
     {
@@ -63,75 +63,10 @@ public class Vendor
     {
         this.createdAt=LocalDateTime.now();
     }
-    public Vendor(Long id,String typeName,String email,String phone,String industry,LocalDateTime createdAt)
+    public Vendor(Long id,String vendorName,String email,String phone,String industry,LocalDateTime createdAt)
     {
         this.id=id;
-        this.typeName=typeName;
-        this.email=email;
-        this.phone=phone;
-        this.industry=industry;
-        this.createdAt=createdAt;
-    }
-    public Vendor()
-    {
-
-    }
-     
-}eName;
-    private String email;
-    private String phone;
-    private String industry;
-    private LocalDateTime createdAt;
-
-    public Long getId()
-    {
-        return id;
-    }
-    public void setId(Long id)
-    {
-        this.id=id;
-    }
-    public String gettypeName()
-    {
-        return typeName;
-    }
-    public void settypeName(String fullName)
-    {
-        this.typeName=typeName;
-    }
-    public String getEmail()
-    {
-        return email;
-    }
-    public void setEmail(String email)
-    {
-        this.email=email;
-    }
-    public String getPhone()
-    {
-        return phone;
-    }
-    public void setPhone(String password)
-    {
-        this.phone=phone;
-    }
-    public String getIndustry()
-    {
-        return industry;
-    }
-    public void setIndustry(String role)
-    {
-        this.industry=industry;
-    }
-    @PrePersist
-    protected void onCreate()
-    {
-        this.createdAt=LocalDateTime.now();
-    }
-    public Vendor(Long id,String typeName,String email,String phone,String industry,LocalDateTime createdAt)
-    {
-        this.id=id;
-        this.typeName=typeName;
+        this.vendorName=vendorName;
         this.email=email;
         this.phone=phone;
         this.industry=industry;
