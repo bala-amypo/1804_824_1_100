@@ -13,10 +13,10 @@ public class UserImplement implements UserService{
     public User register(User user){
         return obj.save(user);
     }
-    public Optional<User> findByEmail(User email){
+    public User findByEmail(User email){
         return obj.findByEmail(email).orElse(null);
     }
-    public Optional<User> getUser(User id)
+    public User getUser(User id)
     {
         return obj.findById(id).orElse(null);
     }
