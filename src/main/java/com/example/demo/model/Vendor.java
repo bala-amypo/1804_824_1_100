@@ -63,7 +63,7 @@ public class Vendor
     {
         this.createdAt=LocalDateTime.now();
     }
-    public User(Long id,String fullName,String email,String password,String role,LocalDateTime createdAt)
+    public User(Long id,String vendorName,String email,String phone,String industry,LocalDateTime createdAt)
     {
         this.id=id;
         this.vendorName=vendorName;

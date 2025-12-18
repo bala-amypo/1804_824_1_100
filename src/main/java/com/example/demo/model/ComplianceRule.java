@@ -1,4 +1,4 @@
-ppublic class ComplianceRule
+public class ComplianceRule
 {
     
 }
