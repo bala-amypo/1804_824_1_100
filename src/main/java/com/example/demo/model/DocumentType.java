@@ -15,7 +15,7 @@ public class DocumentType
     private String typeName;
     private String description;
     private Boolean required;
-    private String industry;
+    private int weight;
     private LocalDateTime createdAt;
 
     public Long getId()
@@ -52,24 +52,24 @@ public class DocumentType
     }
     public int getweight()
     {
-        return industry;
+        return weight;
     }
-    public void setIndustry(String role)
+    public void setweight(int weight)
     {
-        this.industry=industry;
+        this.weight=weight;
     }
     @PrePersist
     protected void onCreate()
     {
         this.createdAt=LocalDateTime.now();
     }
-    public DocumentType(Long id,String vendorName,String description,String phone,String industry,LocalDateTime createdAt)
+    public DocumentType(Long id,String vendorName,String description,Boolean required,int weight,LocalDateTime createdAt)
     {
         this.id=id;
-        this.vendorName=vendorName;
+        this.typeName=typeName;
         this.description=description;
-        this.phone=phone;
-        this.industry=industry;
+        this.required=required;
+        this.weight=weight;
         this.createdAt=createdAt;
     }
     public DocumentType()
