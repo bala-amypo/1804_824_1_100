@@ -66,10 +66,10 @@ public class Vendor
     public User(Long id,String fullName,String email,String password,String role,LocalDateTime createdAt)
     {
         this.id=id;
-        this.fullName=fullName;
+        this.vendorName=vendorName;
         this.email=email;
-        this.password=password;
-        this.role=role;
+        this.phone=phone;
+        this.industry=industry;
         this.createdAt=createdAt;
     }
     public User()
