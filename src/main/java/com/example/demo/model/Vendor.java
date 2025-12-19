@@ -66,9 +66,9 @@ public Vendor(Long id,String vendorName,String email,String phone,String industr
     this.industry=industry;
     this.createdAt=createdAt;
 
-public vendor()
+public Vendor()
 {
-    
+
 }
 }
 }
