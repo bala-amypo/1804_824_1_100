@@ -45,6 +45,13 @@ public String getPhone()
 {
     return phone;
 }
-public voif setPhone(S)
+public void setPhone(String phone)
+{
+    this.phone=phone;
+}
+public String setIndustry()
+{
+    
+}
 
 }
