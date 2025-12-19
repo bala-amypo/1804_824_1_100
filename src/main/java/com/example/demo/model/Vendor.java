@@ -4,11 +4,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Column;
 
 @Entity
 public class Vendor{
  @Id
- @GenerateValue(status=GenerationType.IDENTITY)
+ @GeneratedValue(strategy=GenerationType.IDENTITY)
  private Long id;
  @Column (unique=true)
  private String vendorName;
