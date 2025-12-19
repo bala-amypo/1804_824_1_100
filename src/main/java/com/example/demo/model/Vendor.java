@@ -63,6 +63,12 @@ public Vendor(Long id,String vendorName,String email,String phone,String industr
     this.vendorName=vendorName;
     this.email=email;
     this.phone=phone;
-    
+    this.industry=industry;
+    this.createdAt=createdAt;
 
+public vendor()
+{
+    
+}
+}
 }
