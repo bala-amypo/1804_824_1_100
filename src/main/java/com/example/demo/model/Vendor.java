@@ -1,5 +1,5 @@
 package com.example.demo.model;
-import jakarta.persistence.id;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import java.time.LocalDateTime;
