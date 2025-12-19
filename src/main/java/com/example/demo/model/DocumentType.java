@@ -10,6 +10,10 @@ public class DocumentType
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @Column(unique=true)
+    private String typeName;
+    private String description;
+    
 
 
 
