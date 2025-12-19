@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+import jakarta.persistence.PrePersist;
 @Entity
 @Getter
 @Setter
@@ -17,12 +18,16 @@ public class DocumentType
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @Column(unique=true)
+    @Column(unique=true,nullable = false)
     private String typeName;
     private String description;
     private Boolean required;
     private int weight;
     private LocalDateTime createdAt;
+    @PrePersist
+    protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+}
 
 
 }
