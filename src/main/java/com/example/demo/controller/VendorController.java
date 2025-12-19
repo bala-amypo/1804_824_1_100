@@ -19,10 +19,14 @@ public class VendorController
         return obj.createVendor(vendor);
     }
     @GetMapping
-    public Vendor getvendor(Long id)
+    public Vendor getVendor(Long id)
     {
-        
+        return obj.getVendor(id);
     }
-    
+    @GetMapping
+    public List<Vendor> getAllVendors()
+    {
+        return obj.getAllVendors();
+    }
     
 }
