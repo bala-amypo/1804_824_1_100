@@ -2,7 +2,7 @@ package com.example.demo.service.implement;
 import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.VendorRepository;
-import com.example.demo.model;
+import com.example.demo.model.Vendor;
 import java.util.List;
 
 
