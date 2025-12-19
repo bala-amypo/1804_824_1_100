@@ -13,13 +13,16 @@ public class VendorServiceImpl implements VendorService
     {
         this.obj=obj;
     }
+    @Override
     public Vendor createVendor(Vendor vendor)
     {
         return obj.save(vendor);
     }
+    @Override
     public Vendor getVendor(Long id){
         return obj.findById(id);
     }
+    @Override
     public List<Vendor> getAllVendors()
     {
         return obj.findAll();
