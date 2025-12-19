@@ -21,7 +21,7 @@ public class VendorServiceImpl implements VendorService
     }
     @Override
     public Vendor getVendor(Long id){
-        return obj.findById(id);
+        return obj.findById(id).orElse(null);
     }
     @Override
     public List<Vendor> getAllVendors()
