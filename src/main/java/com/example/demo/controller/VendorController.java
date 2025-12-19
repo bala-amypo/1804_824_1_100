@@ -9,11 +9,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class VendorController
 {
     private final VendorService obj;
-    public VendorController (Vendor)
+    public VendorController (VendorService obj)
     {
-        this
+        this.obj=obj;
     }
     @PostMapping
+    public Vendor createVendor(@RequestBody Vendor vendor)
+    {
+        return obj.createVendor(vendor);
+    }
+    @GetMapping
+    public Vendor getvendor(Long id)
+    {
+        
+    }
     
     
 }
