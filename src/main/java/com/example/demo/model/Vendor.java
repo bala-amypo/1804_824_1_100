@@ -29,7 +29,11 @@ public class Vendor{
  {
     return vendorName;
  }
- public void setVendorName()
+ public void setVendorName(String vendorName)
+ {
+    this.vendorName=vendorName;
+ }
+ public String getEmail()
  {
     
  }
