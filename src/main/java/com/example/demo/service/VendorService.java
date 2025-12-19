@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-public class VendorService
+public interface VendorService 
 {
+    Vendor createVendor(Vendor vendor);
     
 }
