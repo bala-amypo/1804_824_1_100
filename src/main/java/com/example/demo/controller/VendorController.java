@@ -21,7 +21,7 @@ public class VendorController
     {
         return obj.createVendor(vendor);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public Vendor getVendor(Long id)
     {
         return obj.getVendor(id);
