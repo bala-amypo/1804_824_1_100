@@ -49,9 +49,14 @@ public void setPhone(String phone)
 {
     this.phone=phone;
 }
-public String setIndustry()
+public String getIndustry()
 {
-    
+    return industry;
 }
+public void setIndustry()
+{
+    this.industry=industry;
+}
+
 
 }
