@@ -57,6 +57,12 @@ public void setIndustry()
 {
     this.industry=industry;
 }
-
+public Vendor(Long id,String vendorName,String email,String phone,String industry,LocalDateTime createdAt)
+{
+    this.id=id;
+    this.vendorName=vendorName;
+    this.email=email;
+    this.phone=phone;
+    
 
 }
