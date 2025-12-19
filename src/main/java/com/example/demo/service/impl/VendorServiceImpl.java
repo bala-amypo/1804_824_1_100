@@ -2,6 +2,8 @@ package com.example.demo.service.implement;
 import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.VendorRepository;
+import java.util.List;
+
 
 @Service
 public class VendorServiceImpl implements VendorService
@@ -15,5 +17,11 @@ public class VendorServiceImpl implements VendorService
     {
         return obj.save(vendor);
     }
-    
+    public Vendor getVendor(Long id){
+        return obj.findById(id);
+    }
+    public List<Vendor> getAllVendors()
+    {
+        return obj.findAll();
+    }
 }
