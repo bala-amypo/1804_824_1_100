@@ -11,5 +11,9 @@ public class VendorServiceImpl implements VendorService
     {
         this.obj=obj;
     }
-    public Vendor 
+    public Vendor createVendor(Vendor vendor)
+    {
+        return obj.save(vendor);
+    }
+    
 }
