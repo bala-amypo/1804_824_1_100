@@ -82,6 +82,9 @@
 						<artifactId>surefire-testng</artifactId>
 						<version>3.2.5</version>
 					</dependency>
+					<dependency>
+  sc
+</dependency>
 				</dependencies>
 			</plugin>
 		</plugins>
