@@ -19,7 +19,10 @@ public interface DocumentTypeServiceImpl implements DocumentTypeService
     }
     public List<DocumentType> getAllDocumentTypes()
     {
-        return obj.FindAll()
+        return obj.FindAll();
     }
-    public 
+    public DocumentType getDocumentType(Long id)
+    {
+        return obj.findById(id);
+    }
 }
