@@ -25,6 +25,6 @@ public class DocumentTypeServiceImpl implements DocumentTypeService{
     @Override
     public DocumentType getDocumentType(Long id)
     {
-        return obj.findById(id);
+        return obj.findById(id).orElse(null);
     }
 }
