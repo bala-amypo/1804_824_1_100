@@ -8,28 +8,29 @@ import com.example.demo.service.DocumentTypeService;
 import com.example.demo.model.DocumentType;
 import java.util.List;
 @RestController
-@RequestMapping("/api/vendors")
-public class VendorController
+@RequestMapping("/api/document-types")
+public class DocumentTypeController
 {
     private final DocumentTypeService obj;
-    public VendorController (DocumentTypeService obj)
+    public DocumentTypeController (DocumentTypeService obj)
     {
         this.obj=obj;
     }
     @PostMapping
-    public DocumentType createVendor(@RequestBody DocumentType vendor)
+    public DocumentType createendor(@RequestBody DocumentType vendor)
     {
         return obj.createVendor(vendor);
-    }
-    @GetMapping("/{id}")
-    public DocumentType getVendor(Long id)
-    {
-        return obj.getVendor(id);
     }
     @GetMapping
     public List<DocumentType> getAllVendors()
     {
-        return obj.getAllVendors();
+        return obj.getAllDocumentTypes();
     }
+    @GetMapping("/{id}")
+    public DocumentType getVendor(Long id)
+    {
+        return obj.getDocumentTypes(id);
+    }
+    
     
 }
