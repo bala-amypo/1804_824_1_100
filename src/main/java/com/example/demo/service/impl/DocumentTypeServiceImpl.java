@@ -6,8 +6,7 @@ import com.example.demo.model.DocumentType;
 import java.util.List;
  
 @Service
-public interface DocumentTypeServiceImpl implements DocumentTypeService
-{
+public class DocumentTypeServiceImpl implements DocumentTypeService{
     private final DocumentTypeRepository obj;
     public DocumentTypeServiceImpl (DocumentTypeRepository obj)
     {
@@ -19,7 +18,7 @@ public interface DocumentTypeServiceImpl implements DocumentTypeService
     }
     public List<DocumentType> getAllDocumentTypes()
     {
-        return obj.FindAll();
+        return obj.findAll();
     }
     public DocumentType getDocumentType(Long id)
     {
