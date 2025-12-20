@@ -3,7 +3,7 @@ import java.util.List;
 import com.example.demo.model.DocumentType;
 
 
-public class DocumentType
+public interface DocumentType
 {
     DocumentType createDocumentType(DocumentType type);
     List<DocumentType> getAllDocumentTypes();

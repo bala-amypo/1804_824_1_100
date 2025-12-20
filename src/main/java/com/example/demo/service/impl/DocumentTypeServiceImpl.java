@@ -12,14 +12,17 @@ public class DocumentTypeServiceImpl implements DocumentTypeService{
     {
         this.obj=obj;
     }
+    
     public DocumentType createDocumentType(DocumentType type)
     {
-        return obj.save(Type);
+        return obj.save(type);
     }
+    @Override
     public List<DocumentType> getAllDocumentTypes()
     {
         return obj.findAll();
     }
+    @Override
     public DocumentType getDocumentType(Long id)
     {
         return obj.findById(id);
