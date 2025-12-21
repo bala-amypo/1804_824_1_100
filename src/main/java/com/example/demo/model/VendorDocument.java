@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import com.example.demo.model.Vendor;
 import jakarta.persistence.PrePersist;
+import com.example.demo.model.documentType;
 
 @Entity
 @Getter
@@ -26,7 +27,9 @@ public class DocumentType
     private Vendor vendor;
     @Column(unique=true,nullable = false)
     private String fileUrl;
-    private String
+    @ManyToOne
+    @JoinColumn(name= "documentType_id")
+    private String documentType;
     private Boolean isValid;
     private LocalDateTime createdAt;
     private LocalDateTime expiryDate;
