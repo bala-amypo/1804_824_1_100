@@ -1,69 +1,41 @@
-package com.example.demo.service.implement;
+package com.example.demo.model;
 
-import com.example.demo.model.DocumentType;
-import com.example.demo.model.Vendor;
-import com.example.demo.model.VendorDocument;
-import com.example.demo.repository.DocumentTypeRepository;
-import com.example.demo.repository.VendorDocumentRepository;
-import com.example.demo.repository.VendorRepository;
-import com.example.demo.service.VendorDocumentService;
-import org.springframework.stereotype.Service;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Service
-public class VendorDocumentServiceImpl implements VendorDocumentService {
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class VendorDocument {
 
-    private final VendorDocumentRepository vendorDocumentRepo;
-    private final VendorRepository vendorRepo;
-    private final DocumentTypeRepository documentTypeRepo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public VendorDocumentServiceImpl(
-            VendorDocumentRepository vendorDocumentRepo,
-            VendorRepository vendorRepo,
-            DocumentTypeRepository documentTypeRepo
-    ) {
-        this.vendorDocumentRepo = vendorDocumentRepo;
-        this.vendorRepo = vendorRepo;
-        this.documentTypeRepo = documentTypeRepo;
-    }
+    @ManyToOne
+    @JoinColumn(name = "vendor_id", nullable = false)
+    private Vendor vendor;
 
-    @Override
-    public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
-        if (document.getFileUrl() == null || document.getFileUrl().isBlank()) {
-            throw new IllegalArgumentException("fileUrl is required");
-        }
+    @ManyToOne
+    @JoinColumn(name = "document_type_id", nullable = false)
+    private DocumentType documentType;
 
-        Vendor vendor = vendorRepo.findById(vendorId)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+    @Column(nullable = false)
+    private String fileUrl;
 
-        DocumentType type = documentTypeRepo.findById(typeId)
-                .orElseThrow(() -> new RuntimeException("DocumentType not found"));
+    private LocalDateTime uploadedAt;
 
-        LocalDateTime now = LocalDateTime.now();
+    private LocalDateTime expiryDate;
 
-        document.setVendor(vendor);
-        document.setDocumentType(type);
-        document.setUploadedAt(now);
+    private Boolean isValid;
 
-        if (document.getExpiryDate() != null && !document.getExpiryDate().isAfter(now)) {
-            throw new IllegalArgumentException("expiryDate must be in the future");
-        }
-
-        document.setIsValid(document.getExpiryDate() == null || document.getExpiryDate().isAfter(now));
-
-        return vendorDocumentRepo.save(document);
-    }
-
-    @Override
-    public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
-        return vendorDocumentRepo.findByVendorId(vendorId);
-    }
-
-    @Override
-    public VendorDocument getDocument(Long id) {
-        return vendorDocumentRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("VendorDocument not found"));
+    @PrePersist
+    protected void onCreate() {
+        this.uploadedAt = LocalDateTime.now();
+        this.isValid = (expiryDate == null) || expiryDate.isAfter(LocalDateTime.now());
     }
 }
