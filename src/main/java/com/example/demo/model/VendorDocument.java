@@ -1,25 +1,19 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.PrePersist;
-
-import java.time.LocalDateTime;
-
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class DocumentType {
+@AllArgsConstructor
+public class VendorDocument {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +23,22 @@ public class DocumentType {
     @JoinColumn(name = "vendor_id", nullable = false)
     private Vendor vendor;
 
-    @Column(unique = true, nullable = false)
-    private String fileUrl;
+    @ManyToOne
+    @JoinColumn(name = "document_type_id", nullable = false)
+    private DocumentType documentType;
 
     @Column(nullable = false)
-    private String documentType;
+    private String fileUrl;
 
-    private Boolean isValid;
-
-    private LocalDateTime createdAt;
+    private LocalDateTime uploadedAt;
 
     private LocalDateTime expiryDate;
 
+    private Boolean isValid;
+
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.expiryDate = LocalDateTime.now();
+        this.uploadedAt = LocalDateTime.now();
+        this.isValid = (expiryDate == null || expiryDate.isAfter(LocalDateTime.now()));
     }
 }
