@@ -20,13 +20,17 @@ public class DocumentType
     private Long id;
     @Column(unique=true,nullable = false)
     private String typeName;
-    private String description;
-    private Boolean required;
+    private String fileUrl;
+    private Boolean isValid;
     private int weight;
     private LocalDateTime createdAt;
+    private LocalDateTime expiryDate;
     @PrePersist
     protected void onCreate() {
     this.createdAt = LocalDateTime.now();
+    @PrePersist
+    protected void onCreated() {
+    this.expiryDate = LocalDateTime.now();
 }
 
 
