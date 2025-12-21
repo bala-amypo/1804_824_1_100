@@ -16,7 +16,7 @@ public class ComplianceRuleServiceImpl implements ComplianceRuleService {
     private final ComplianceRuleRepository repository;
     public ComplianceRuleServiceImpl (ComplianceRuleRepository repository)
     {
-        this.obj=obj;
+        this.repository=repository;
     }
 
     @Override
