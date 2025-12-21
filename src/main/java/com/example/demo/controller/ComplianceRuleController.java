@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.ComplianceRule;
+import com.example.demo.model.ComplianceRule;
 import com.example.demo.service.ComplianceRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
