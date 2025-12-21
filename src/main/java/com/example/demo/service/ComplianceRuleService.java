@@ -1,5 +1,5 @@
 package com.example.demo.service;
-import com.example.demo.ComplianceRule;
+import com.example.demo.service.ComplianceRule;
 import java.util.List;
 
 public interface ComplianceRuleService

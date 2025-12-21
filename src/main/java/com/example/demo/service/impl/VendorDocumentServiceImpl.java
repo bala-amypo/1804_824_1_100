@@ -1,41 +1,52 @@
-package com.example.demo.model;
-
-import jakarta.persistence.*;
-import lombok.*;
+package com.example.demo.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class VendorDocument {
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.model.Vendor;
+import com.example.demo.model.DocumentType;
+import com.example.demo.model.VendorDocument;
+import com.example.demo.repository.VendorRepository;
+import com.example.demo.repository.DocumentTypeRepository;
+import com.example.demo.repository.VendorDocumentRepository;
+import com.example.demo.service.VendorDocumentService;
 
-    @ManyToOne
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private Vendor vendor;
+@Service
+@RequiredArgsConstructor
+public class VendorDocumentServiceImpl implements VendorDocumentService {
 
-    @ManyToOne
-    @JoinColumn(name = "document_type_id", nullable = false)
-    private DocumentType documentType;
+    private final VendorDocumentRepository vendorDocumentRepository;
+    private final VendorRepository vendorRepository;
+    private final DocumentTypeRepository documentTypeRepository;
 
-    @Column(nullable = false)
-    private String fileUrl;
+    @Override
+    public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
 
-    private LocalDateTime uploadedAt;
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
+        DocumentType documentType = documentTypeRepository.findById(typeId).orElseThrow();
 
-    private LocalDateTime expiryDate;
+        document.setVendor(vendor);
+        document.setDocumentType(documentType);
 
-    private Boolean isValid;
+        if (document.getExpiryDate() == null || document.getExpiryDate().isAfter(LocalDateTime.now())) {
+            document.setIsValid(true);
+        } else {
+            document.setIsValid(false);
+        }
 
-    @PrePersist
-    protected void onCreate() {
-        this.uploadedAt = LocalDateTime.now();
-        this.isValid = (expiryDate == null) || expiryDate.isAfter(LocalDateTime.now());
+        return vendorDocumentRepository.save(document);
+    }
+
+    @Override
+    public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
+        return vendorDocumentRepository.findByVendorId(vendorId);
+    }
+
+    @Override
+    public VendorDocument getDocument(Long id) {
+        return vendorDocumentRepository.findById(id).orElseThrow();
     }
 }
