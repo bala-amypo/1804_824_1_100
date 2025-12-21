@@ -26,6 +26,7 @@ public class DocumentType
     private Vendor vendor;
     @Column(unique=true,nullable = false)
     private String fileUrl;
+    private String
     private Boolean isValid;
     private LocalDateTime createdAt;
     private LocalDateTime expiryDate;
