@@ -1,43 +1,36 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.model.ComplianceScore;
+import com.example.demo.repository.ComplianceScoreRepository;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
+import com.example.demo.service.ComplianceScoreService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ComplianceScoreServiceImpl {
+public class ComplianceScoreServiceImpl implements ComplianceScoreService {
 
-    private final VendorDocumentRepository vendorDocumentRepository;
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
-
-    public ComplianceScoreServiceImpl(VendorDocumentRepository vendorDocumentRepository) {
-        this(vendorDocumentRepository, null, null);
-    }
+    private final VendorDocumentRepository vendorDocumentRepository;
+    private final ComplianceScoreRepository complianceScoreRepository;
 
     public ComplianceScoreServiceImpl(
-            VendorDocumentRepository vendorDocumentRepository,
             VendorRepository vendorRepository,
-            DocumentTypeRepository documentTypeRepository
+            DocumentTypeRepository documentTypeRepository,
+            VendorDocumentRepository vendorDocumentRepository,
+            ComplianceScoreRepository complianceScoreRepository
     ) {
-        this.vendorDocumentRepository = vendorDocumentRepository;
         this.vendorRepository = vendorRepository;
         this.documentTypeRepository = documentTypeRepository;
+        this.vendorDocumentRepository = vendorDocumentRepository;
+        this.complianceScoreRepository = complianceScoreRepository;
     }
 
-    public void evaluateVendor(long vendorId) {
-        evaluateVendor(Long.valueOf(vendorId));
-    }
-
-    public void evaluateVendor(Long vendorId) {
-    }
-
-    public int getScore(long vendorId) {
-        return getScore(Long.valueOf(vendorId));
-    }
-
-    public int getScore(Long vendorId) {
-        return 0;
+    @Override
+    public ComplianceScore calculateCompliance(Long vendorId) {
+        ComplianceScore score = new ComplianceScore();
+        return complianceScoreRepository.save(score);
     }
 }
