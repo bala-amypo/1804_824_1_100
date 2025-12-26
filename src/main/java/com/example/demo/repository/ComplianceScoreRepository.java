@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ComplianceScoreRepository extends JpaRepository<ComplianceScore, Long> {
-    Optional<ComplianceScore> findByVendor_Id(Long vendorId);
+    Optional<ComplianceScore> findByVendorId(Long vendorId);
 }
