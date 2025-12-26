@@ -1,24 +1,40 @@
 package com.example.demo.service.impl;
-import com.example.demo.service.UserService;
+
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Service
-public class UserServiceImpl implements UserService{
-    @Autowired
-    UserRepository obj;
-    public User register(User user){
-        return obj.save(user);
+public class UserServiceImpl {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-    public User findByEmail(String email){
-        return obj.findByEmail(email).orElse(null);
-     }
 
-     public User getUser(Long id)
-     {
-         return obj.findById(id).orElse(null);
-     }
+    public User registerUser(User u) {
+        if (u == null || u.getEmail() == null) {
+            throw new IllegalArgumentException("Email already used");
+        }
+        if (userRepository.existsByEmail(u.getEmail())) {
+            throw new IllegalArgumentException("Email already used");
+        }
+        if (u.getPassword() != null) {
+            u.setPassword(passwordEncoder.encode(u.getPassword()));
+        }
+        return userRepository.save(u);
+    }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 }

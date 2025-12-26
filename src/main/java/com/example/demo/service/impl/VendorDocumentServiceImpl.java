@@ -1,52 +1,48 @@
 package com.example.demo.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-
-import com.example.demo.model.Vendor;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DocumentType;
+import com.example.demo.model.Vendor;
 import com.example.demo.model.VendorDocument;
-import com.example.demo.repository.VendorRepository;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
-import com.example.demo.service.VendorDocumentService;
+import com.example.demo.repository.VendorRepository;
 
-@Service
-@RequiredArgsConstructor
-public class VendorDocumentServiceImpl implements VendorDocumentService {
+import java.time.LocalDate;
+
+public class VendorDocumentServiceImpl {
 
     private final VendorDocumentRepository vendorDocumentRepository;
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
 
-    @Override
-    public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
+    public VendorDocumentServiceImpl(VendorDocumentRepository vendorDocumentRepository,
+                                    VendorRepository vendorRepository,
+                                    DocumentTypeRepository documentTypeRepository) {
+        this.vendorDocumentRepository = vendorDocumentRepository;
+        this.vendorRepository = vendorRepository;
+        this.documentTypeRepository = documentTypeRepository;
+    }
 
-        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
-        DocumentType documentType = documentTypeRepository.findById(typeId).orElseThrow();
-
-        document.setVendor(vendor);
-        document.setDocumentType(documentType);
-
-        if (document.getExpiryDate() == null || document.getExpiryDate().isAfter(LocalDateTime.now())) {
-            document.setIsValid(true);
-        } else {
-            document.setIsValid(false);
+    public VendorDocument uploadDocument(Long vendorId, Long docTypeId, VendorDocument doc) {
+        if (doc != null && doc.getExpiryDate() != null && doc.getExpiryDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Expiry date cannot be in the past");
         }
 
-        return vendorDocumentRepository.save(document);
+        Vendor v = vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
+
+        DocumentType dt = documentTypeRepository.findById(docTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("DocumentType not found"));
+
+        doc.setVendor(v);
+        doc.setDocumentType(dt);
+
+        return vendorDocumentRepository.save(doc);
     }
 
-    @Override
-    public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
-        return vendorDocumentRepository.findByVendorId(vendorId);
-    }
-
-    @Override
     public VendorDocument getDocument(Long id) {
-        return vendorDocumentRepository.findById(id).orElseThrow();
+        return vendorDocumentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("VendorDocument not found"));
     }
 }
