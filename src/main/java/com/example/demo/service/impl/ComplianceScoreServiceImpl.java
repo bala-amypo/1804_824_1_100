@@ -13,19 +13,22 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ComplianceScoreServiceImpl implements ComplianceScoreService {
 
-    private final VendorRepository vendorRepository;
     private final VendorDocumentRepository vendorDocumentRepository;
+    private final VendorRepository vendorRepository;
     private final ComplianceScoreRepository complianceScoreRepository;
 
-    public ComplianceScoreServiceImpl(VendorRepository vendorRepository,
-                                      VendorDocumentRepository vendorDocumentRepository,
-                                      ComplianceScoreRepository complianceScoreRepository) {
-        this.vendorRepository = vendorRepository;
+    public ComplianceScoreServiceImpl(
+            VendorDocumentRepository vendorDocumentRepository,
+            VendorRepository vendorRepository,
+            ComplianceScoreRepository complianceScoreRepository
+    ) {
         this.vendorDocumentRepository = vendorDocumentRepository;
+        this.vendorRepository = vendorRepository;
         this.complianceScoreRepository = complianceScoreRepository;
     }
 
@@ -34,57 +37,40 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
 
-        Set<DocumentType> supported = vendor.getSupportedDocumentTypes();
-        double requiredTotalWeight = supported.stream()
-                .filter(DocumentType::isRequired)
-                .mapToDouble(DocumentType::getWeight)
-                .sum();
+        Set<DocumentType> requiredTypes = vendor.getSupportedDocumentTypes()
+                .stream()
+                .filter(t -> Boolean.TRUE.equals(t.getRequired()))
+                .collect(Collectors.toSet());
 
-        double score;
-
-        if (requiredTotalWeight == 0.0) {
-            score = 100.0;
-        } else {
-            List<VendorDocument> docs = vendorDocumentRepository.findByVendorId(vendorId);
-
-            double satisfiedWeight = supported.stream()
-                    .filter(DocumentType::isRequired)
-                    .filter(type -> hasValidDoc(docs, type.getId()))
-                    .mapToDouble(DocumentType::getWeight)
-                    .sum();
-
-            score = (satisfiedWeight / requiredTotalWeight) * 100.0;
+        if (requiredTypes.isEmpty()) {
+            ComplianceScore score = new ComplianceScore();
+            score.setVendor(vendor);
+            score.setScoreValue(100.0);
+            return complianceScoreRepository.save(score);
         }
 
-        ComplianceScore cs = complianceScoreRepository.findByVendorId(vendorId)
-                .orElse(new ComplianceScore());
+        List<VendorDocument> documents =
+                vendorDocumentRepository.findByVendorId(vendorId);
 
-        cs.setVendor(vendor);
-        cs.setScoreValue(score);
-        cs.setRating(ratingFromScore(score));
+        long validCount = documents.stream()
+                .filter(d -> d.getExpiryDate() == null || d.getExpiryDate().isAfter(LocalDate.now()))
+                .map(VendorDocument::getDocumentType)
+                .filter(requiredTypes::contains)
+                .distinct()
+                .count();
 
-        return complianceScoreRepository.save(cs);
+        double scoreValue = (validCount * 100.0) / requiredTypes.size();
+
+        ComplianceScore score = new ComplianceScore();
+        score.setVendor(vendor);
+        score.setScoreValue(scoreValue);
+
+        return complianceScoreRepository.save(score);
     }
 
     @Override
     public ComplianceScore getScore(Long vendorId) {
         return complianceScoreRepository.findByVendorId(vendorId)
                 .orElseThrow(() -> new RuntimeException("Score not found"));
-    }
-
-    private boolean hasValidDoc(List<VendorDocument> docs, Long typeId) {
-        LocalDate today = LocalDate.now();
-        return docs.stream().anyMatch(d ->
-                d.getDocumentType() != null &&
-                typeId.equals(d.getDocumentType().getId()) &&
-                d.getExpiryDate() != null &&
-                !d.getExpiryDate().isBefore(today)
-        );
-    }
-
-    private String ratingFromScore(double score) {
-        if (score >= 100.0) return "COMPLIANT";
-        if (score >= 50.0) return "PARTIALLY_COMPLIANT";
-        return "NON_COMPLIANT";
     }
 }
