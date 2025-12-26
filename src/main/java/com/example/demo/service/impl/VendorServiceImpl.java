@@ -28,7 +28,6 @@ public class VendorServiceImpl implements VendorService {
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
     }
 
-    // ✅ THIS METHOD WAS MISSING
     @Override
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
