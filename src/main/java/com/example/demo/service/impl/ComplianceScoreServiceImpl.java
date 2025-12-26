@@ -5,11 +5,10 @@ import com.example.demo.repository.ComplianceScoreRepository;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
-import com.example.demo.service.ComplianceScoreService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ComplianceScoreServiceImpl implements ComplianceScoreService {
+public class ComplianceScoreServiceImpl {
 
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
@@ -28,7 +27,6 @@ public class ComplianceScoreServiceImpl implements ComplianceScoreService {
         this.complianceScoreRepository = complianceScoreRepository;
     }
 
-    @Override
     public ComplianceScore calculateCompliance(Long vendorId) {
         ComplianceScore score = new ComplianceScore();
         return complianceScoreRepository.save(score);
