@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // ✅ REQUIRED
+@Service
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private final DocumentTypeRepository repo;
@@ -16,18 +16,21 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         this.repo = repo;
     }
 
+    // ✔ matches createDocumentType(DocumentType type)
     @Override
-    public DocumentType create(DocumentType docType) {
-        return repo.save(docType);
+    public DocumentType createDocumentType(DocumentType type) {
+        return repo.save(type);
     }
 
+    // ✔ matches getAllDocumentTypes()
     @Override
-    public List<DocumentType> getAll() {
+    public List<DocumentType> getAllDocumentTypes() {
         return repo.findAll();
     }
 
+    // ✔ matches getDocumentType(Long id)
     @Override
-    public DocumentType getById(Long id) {
+    public DocumentType getDocumentType(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new RuntimeException("DocumentType not found"));
     }
