@@ -1,27 +1,34 @@
 package com.example.demo.controller;
-import com.example.demo.service.UserService;
+
 import com.example.demo.model.User;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.example.demo.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/users")
+public class UserController {
 
-public class UserController
-{
-    @Autowired
-    UserService obj;
-    
-    @PostMapping("/register")
-    public User UserRegister(@RequestBody User user)
-    {
-        return obj.register(user);
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User saved = userService.register(user);
+        return ResponseEntity.ok(saved);
+    }
 
-    
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUser(id);
+        return ResponseEntity.ok(user);
+    }
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.findByEmail(email);
+        return ResponseEntity.ok(user);
+    }
 }
