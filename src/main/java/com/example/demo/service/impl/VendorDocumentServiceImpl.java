@@ -1,10 +1,14 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.VendorDocument;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorDocumentService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class VendorDocumentServiceImpl implements VendorDocumentService {
@@ -25,5 +29,26 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
         this.vendorDocumentRepository = vendorDocumentRepository;
         this.vendorRepository = vendorRepository;
         this.documentTypeRepository = documentTypeRepository;
+    }
+
+    @Override
+    public VendorDocument getDocument(Long id) {
+        return vendorDocumentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("VendorDocument not found with id: " + id));
+    }
+
+    @Override
+    public List<VendorDocument> getAllDocuments() {
+        return vendorDocumentRepository.findAll();
+    }
+
+    @Override
+    public VendorDocument saveDocument(VendorDocument vendorDocument) {
+        return vendorDocumentRepository.save(vendorDocument);
+    }
+
+    @Override
+    public void deleteDocument(Long id) {
+        vendorDocumentRepository.deleteById(id);
     }
 }
