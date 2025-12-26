@@ -6,7 +6,9 @@ import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ REQUIRED
+import java.util.List;
+
+@Service
 public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
@@ -16,13 +18,19 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
-    public Vendor createVendor(Vendor v) {
-        return vendorRepository.save(v);
+    public Vendor createVendor(Vendor vendor) {
+        return vendorRepository.save(vendor);
     }
 
     @Override
     public Vendor getVendor(Long id) {
         return vendorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
+    }
+
+    // ✅ THIS METHOD WAS MISSING
+    @Override
+    public List<Vendor> getAllVendors() {
+        return vendorRepository.findAll();
     }
 }
