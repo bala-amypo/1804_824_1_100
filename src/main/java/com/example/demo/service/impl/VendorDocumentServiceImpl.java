@@ -38,16 +38,22 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     }
 
     @Override
+    public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
+        return vendorDocumentRepository.findAll().stream()
+                .filter(d -> d.getVendor() != null
+                        && d.getVendor().getId() != null
+                        && d.getVendor().getId().equals(vendorId))
+                .toList();
+    }
+
     public List<VendorDocument> getAllDocuments() {
         return vendorDocumentRepository.findAll();
     }
 
-    @Override
     public VendorDocument saveDocument(VendorDocument vendorDocument) {
         return vendorDocumentRepository.save(vendorDocument);
     }
 
-    @Override
     public void deleteDocument(Long id) {
         vendorDocumentRepository.deleteById(id);
     }
