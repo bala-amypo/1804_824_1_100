@@ -10,6 +10,7 @@ import com.example.demo.service.VendorDocumentService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class VendorDocumentServiceImpl implements VendorDocumentService {
@@ -48,5 +49,10 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     public VendorDocument getDocument(Long id) {
         return vendorDocumentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Document not found"));
+    }
+
+    @Override
+    public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
+        return vendorDocumentRepository.findByVendorId(vendorId);
     }
 }
