@@ -7,6 +7,8 @@ import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ComplianceScoreServiceImpl {
 
@@ -28,7 +30,16 @@ public class ComplianceScoreServiceImpl {
     }
 
     public ComplianceScore calculateCompliance(Long vendorId) {
+        return evaluateVendor(vendorId);
+    }
+
+    public ComplianceScore evaluateVendor(Long vendorId) {
         ComplianceScore score = new ComplianceScore();
         return complianceScoreRepository.save(score);
+    }
+
+    public ComplianceScore getScore(Long vendorId) {
+        Optional<ComplianceScore> existing = complianceScoreRepository.findById(vendorId);
+        return existing.orElse(null);
     }
 }
