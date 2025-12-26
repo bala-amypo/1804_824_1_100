@@ -1,34 +1,35 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.VendorDocument;
-import com.example.demo.repository.VendorDocumentRepository;
-import com.example.demo.service.VendorDocumentService;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Vendor;
+import com.example.demo.repository.VendorRepository;
+import com.example.demo.service.VendorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // ✅ REQUIRED
-public class VendorDocumentServiceImpl implements VendorDocumentService {
+@Service
+public class VendorServiceImpl implements VendorService {
 
-    private final VendorDocumentRepository vendorDocumentRepository;
+    private final VendorRepository vendorRepository;
 
-    public VendorDocumentServiceImpl(VendorDocumentRepository vendorDocumentRepository) {
-        this.vendorDocumentRepository = vendorDocumentRepository;
+    public VendorServiceImpl(VendorRepository vendorRepository) {
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
-    public VendorDocument createVendorDocument(VendorDocument doc) {
-        return vendorDocumentRepository.save(doc);
+    public Vendor createVendor(Vendor vendor) {
+        return vendorRepository.save(vendor);
     }
 
     @Override
-    public VendorDocument getVendorDocument(Long id) {
-        return vendorDocumentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vendor document not found"));
+    public Vendor getVendor(Long id) {
+        return vendorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
     }
 
     @Override
-    public List<VendorDocument> getAllVendorDocuments() {
-        return vendorDocumentRepository.findAll();
+    public List<Vendor> getAllVendors() {
+        return vendorRepository.findAll();
     }
 }
