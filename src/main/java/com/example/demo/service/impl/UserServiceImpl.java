@@ -19,17 +19,42 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✔ REQUIRED by UserService
     @Override
     public User register(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return registerUser(user);
+    }
+
+    public User registerUser(User user) {
+        if (user == null || user.getEmail() == null) {
+            throw new IllegalArgumentException("Invalid user");
+        }
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already used");
+        }
+
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         return userRepository.save(user);
     }
 
-    // ✔ REQUIRED by UserService
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+
+    public User getById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+   
+    @Override
+    public User getUser(Long id) {
+        return getById(id);
     }
 }
