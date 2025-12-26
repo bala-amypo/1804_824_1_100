@@ -6,7 +6,7 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
-import com.example.demo.service.impl.UserServiceImpl;
+// import com.example.demo.service.impl.UserServiceImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
