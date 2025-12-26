@@ -19,40 +19,39 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
 
-    public VendorDocumentServiceImpl(VendorDocumentRepository vendorDocumentRepository,
-                                     VendorRepository vendorRepository,
-                                     DocumentTypeRepository documentTypeRepository) {
+    public VendorDocumentServiceImpl(
+            VendorDocumentRepository vendorDocumentRepository,
+            VendorRepository vendorRepository,
+            DocumentTypeRepository documentTypeRepository
+    ) {
         this.vendorDocumentRepository = vendorDocumentRepository;
         this.vendorRepository = vendorRepository;
         this.documentTypeRepository = documentTypeRepository;
     }
 
     @Override
-    public VendorDocument uploadDocument(Long vendorId, Long documentTypeId, VendorDocument doc) {
-        if (doc == null) throw new RuntimeException("Document is required");
-        if (doc.getExpiryDate() == null) throw new RuntimeException("Expiry date is required");
-        if (doc.getExpiryDate().isBefore(LocalDate.now())) throw new RuntimeException("Document is expired");
+    public VendorDocument uploadDocument(Long vendorId, Long typeId, VendorDocument document) {
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
+        DocumentType type = documentTypeRepository.findById(typeId).orElseThrow();
 
-        Vendor vendor = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+        if (document.getExpiryDate() != null &&
+            document.getExpiryDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Document expired");
+        }
 
-        DocumentType type = documentTypeRepository.findById(documentTypeId)
-                .orElseThrow(() -> new RuntimeException("Document type not found"));
-
-        doc.setVendor(vendor);
-        doc.setDocumentType(type);
-
-        return vendorDocumentRepository.save(doc);
+        document.setVendor(vendor);
+        document.setDocumentType(type);
+        return vendorDocumentRepository.save(document);
     }
 
     @Override
     public VendorDocument getDocument(Long id) {
-        return vendorDocumentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Document not found"));
+        return vendorDocumentRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<VendorDocument> getDocumentsForVendor(Long vendorId) {
-        return vendorDocumentRepository.findByVendorId(vendorId);
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
+        return vendorDocumentRepository.findByVendor(vendor);
     }
 }

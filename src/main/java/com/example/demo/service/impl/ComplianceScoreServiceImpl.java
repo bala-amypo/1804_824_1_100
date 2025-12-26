@@ -5,6 +5,7 @@ import com.example.demo.model.DocumentType;
 import com.example.demo.model.Vendor;
 import com.example.demo.model.VendorDocument;
 import com.example.demo.repository.ComplianceScoreRepository;
+import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.ComplianceScoreService;
@@ -13,64 +14,63 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ComplianceScoreServiceImpl implements ComplianceScoreService {
 
-    private final VendorDocumentRepository vendorDocumentRepository;
     private final VendorRepository vendorRepository;
+    private final DocumentTypeRepository documentTypeRepository;
+    private final VendorDocumentRepository vendorDocumentRepository;
     private final ComplianceScoreRepository complianceScoreRepository;
 
     public ComplianceScoreServiceImpl(
-            VendorDocumentRepository vendorDocumentRepository,
             VendorRepository vendorRepository,
+            DocumentTypeRepository documentTypeRepository,
+            VendorDocumentRepository vendorDocumentRepository,
             ComplianceScoreRepository complianceScoreRepository
     ) {
-        this.vendorDocumentRepository = vendorDocumentRepository;
         this.vendorRepository = vendorRepository;
+        this.documentTypeRepository = documentTypeRepository;
+        this.vendorDocumentRepository = vendorDocumentRepository;
         this.complianceScoreRepository = complianceScoreRepository;
     }
 
     @Override
     public ComplianceScore evaluateVendor(Long vendorId) {
-        Vendor vendor = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
 
-        Set<DocumentType> requiredTypes = vendor.getSupportedDocumentTypes()
-                .stream()
-                .filter(t -> Boolean.TRUE.equals(t.getRequired()))
-                .collect(Collectors.toSet());
-
+        Set<DocumentType> requiredTypes = vendor.getSupportedDocumentTypes();
         if (requiredTypes.isEmpty()) {
-            ComplianceScore score = new ComplianceScore();
-            score.setVendor(vendor);
-            score.setScoreValue(100.0);
-            return complianceScoreRepository.save(score);
+            return saveScore(vendor, 100.0);
         }
 
         List<VendorDocument> documents =
-                vendorDocumentRepository.findByVendorId(vendorId);
+                vendorDocumentRepository.findByVendor(vendor);
 
-        long validCount = documents.stream()
-                .filter(d -> d.getExpiryDate() == null || d.getExpiryDate().isAfter(LocalDate.now()))
-                .map(VendorDocument::getDocumentType)
-                .filter(requiredTypes::contains)
-                .distinct()
+        long validCount = requiredTypes.stream()
+                .filter(dt ->
+                        documents.stream().anyMatch(d ->
+                                d.getDocumentType().equals(dt) &&
+                                (d.getExpiryDate() == null ||
+                                 d.getExpiryDate().isAfter(LocalDate.now()))
+                        )
+                )
                 .count();
 
-        double scoreValue = (validCount * 100.0) / requiredTypes.size();
-
-        ComplianceScore score = new ComplianceScore();
-        score.setVendor(vendor);
-        score.setScoreValue(scoreValue);
-
-        return complianceScoreRepository.save(score);
+        double score = (validCount * 100.0) / requiredTypes.size();
+        return saveScore(vendor, score);
     }
 
     @Override
     public ComplianceScore getScore(Long vendorId) {
-        return complianceScoreRepository.findByVendorId(vendorId)
-                .orElseThrow(() -> new RuntimeException("Score not found"));
+        return complianceScoreRepository.findByVendor_Id(vendorId)
+                .orElse(null);
+    }
+
+    private ComplianceScore saveScore(Vendor vendor, double scoreValue) {
+        ComplianceScore score = new ComplianceScore();
+        score.setVendor(vendor);
+        score.setScoreValue(scoreValue);
+        return complianceScoreRepository.save(score);
     }
 }
