@@ -1,6 +1,8 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DocumentType;
+import com.example.demo.model.Vendor;
 import com.example.demo.model.VendorDocument;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.repository.VendorDocumentRepository;
@@ -17,10 +19,6 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
     private final VendorRepository vendorRepository;
     private final DocumentTypeRepository documentTypeRepository;
 
-    public VendorDocumentServiceImpl(VendorDocumentRepository vendorDocumentRepository) {
-        this(vendorDocumentRepository, null, null);
-    }
-
     public VendorDocumentServiceImpl(
             VendorDocumentRepository vendorDocumentRepository,
             VendorRepository vendorRepository,
@@ -29,6 +27,20 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
         this.vendorDocumentRepository = vendorDocumentRepository;
         this.vendorRepository = vendorRepository;
         this.documentTypeRepository = documentTypeRepository;
+    }
+
+    @Override
+    public VendorDocument uploadDocument(Long vendorId, Long documentTypeId, VendorDocument vendorDocument) {
+        Vendor vendor = vendorRepository.findById(vendorId)
+                .orElseThrow(() -> new ResourceNotFoundException("Vendor not found with id: " + vendorId));
+
+        DocumentType documentType = documentTypeRepository.findById(documentTypeId)
+                .orElseThrow(() -> new ResourceNotFoundException("DocumentType not found with id: " + documentTypeId));
+
+        vendorDocument.setVendor(vendor);
+        vendorDocument.setDocumentType(documentType);
+
+        return vendorDocumentRepository.save(vendorDocument);
     }
 
     @Override
@@ -44,17 +56,5 @@ public class VendorDocumentServiceImpl implements VendorDocumentService {
                         && d.getVendor().getId() != null
                         && d.getVendor().getId().equals(vendorId))
                 .toList();
-    }
-
-    public List<VendorDocument> getAllDocuments() {
-        return vendorDocumentRepository.findAll();
-    }
-
-    public VendorDocument saveDocument(VendorDocument vendorDocument) {
-        return vendorDocumentRepository.save(vendorDocument);
-    }
-
-    public void deleteDocument(Long id) {
-        vendorDocumentRepository.deleteById(id);
     }
 }
