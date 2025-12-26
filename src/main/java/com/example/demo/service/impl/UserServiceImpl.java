@@ -3,11 +3,14 @@ package com.example.demo.service.impl;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ REQUIRED
-public class UserServiceImpl {
+import java.util.List;
+
+@Service   // ✅ REQUIRED so Spring creates the bean
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -18,23 +21,19 @@ public class UserServiceImpl {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(User u) {
-        if (u == null || u.getEmail() == null) {
-            throw new IllegalArgumentException("Email cannot be null");
-        }
-        if (userRepository.existsByEmail(u.getEmail())) {
-            throw new IllegalArgumentException("Email already used");
-        }
-        u.setPassword(passwordEncoder.encode(u.getPassword()));
-        return userRepository.save(u);
+    @Override
+    public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public User getById(Long id) {
+    @Override
+    public User getUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
