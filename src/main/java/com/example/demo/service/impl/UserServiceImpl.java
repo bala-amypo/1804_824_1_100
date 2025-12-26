@@ -4,27 +4,28 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service   // ✅ REQUIRED
 public class UserServiceImpl {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(User u) {
         if (u == null || u.getEmail() == null) {
-            throw new IllegalArgumentException("Email already used");
+            throw new IllegalArgumentException("Email cannot be null");
         }
         if (userRepository.existsByEmail(u.getEmail())) {
             throw new IllegalArgumentException("Email already used");
         }
-        if (u.getPassword() != null) {
-            u.setPassword(passwordEncoder.encode(u.getPassword()));
-        }
+        u.setPassword(passwordEncoder.encode(u.getPassword()));
         return userRepository.save(u);
     }
 

@@ -7,6 +7,7 @@ import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.impl.UserServiceImpl;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public AuthResponse register(@RequestBody RegisterRequest req) {
+
         User u = new User();
         u.setFullName(req.getFullName());
         u.setEmail(req.getEmail());
@@ -45,12 +47,16 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
         );
 
-        String token = jwtUtil.generateToken(auth, saved.getId(), saved.getEmail(), saved.getRole());
+        String token = jwtUtil.generateToken(
+                auth, saved.getId(), saved.getEmail(), saved.getRole()
+        );
+
         return new AuthResponse(token, saved.getId(), saved.getEmail(), saved.getRole());
     }
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody LoginRequest req) {
+
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
         );
@@ -58,7 +64,10 @@ public class AuthController {
         User u = userRepository.findByEmail(req.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String token = jwtUtil.generateToken(auth, u.getId(), u.getEmail(), u.getRole());
+        String token = jwtUtil.generateToken(
+                auth, u.getId(), u.getEmail(), u.getRole()
+        );
+
         return new AuthResponse(token, u.getId(), u.getEmail(), u.getRole());
     }
 }
