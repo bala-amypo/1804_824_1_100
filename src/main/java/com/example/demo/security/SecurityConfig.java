@@ -73,9 +73,20 @@ public class SecurityConfig {
             .httpBasic(httpBasic -> httpBasic.disable())
             .formLogin(form -> form.disable())
 
-            // Authorization rules
+            // ✅ Authorization rules
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/health").permitAll()
+                // Public endpoints
+                .requestMatchers(
+                    "/auth/**",
+                    "/health",
+
+                    // 🔓 Swagger / OpenAPI
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
+
+                // 🔒 Everything else requires JWT
                 .anyRequest().authenticated()
             )
 
