@@ -5,56 +5,82 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 public class SecurityConfig {
 
+    // 🔐 JWT Utility
     @Bean
     public JwtUtil jwtUtil() {
-        return new JwtUtil("my-super-secret-key-please-change", 60 * 60 * 1000); // 1 hour
+        return new JwtUtil(
+                "my-super-secret-key-please-change",
+                60 * 60 * 1000 // 1 hour
+        );
     }
 
+    // 👤 Custom UserDetailsService
     @Bean
     public CustomUserDetailsService userDetailsService(UserRepository userRepository) {
         return new CustomUserDetailsService(userRepository);
     }
 
+    // 🔍 JWT Authentication Filter
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtUtil jwtUtil, CustomUserDetailsService uds) {
+    public JwtAuthenticationFilter jwtAuthenticationFilter(
+            JwtUtil jwtUtil,
+            CustomUserDetailsService uds
+    ) {
         return new JwtAuthenticationFilter(jwtUtil, uds);
     }
 
+    // 🔑 Password Encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // 🔐 Authentication Manager
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception {
-        return cfg.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
+        return config.getAuthenticationManager();
     }
 
+    // 🛡️ Security Filter Chain
     @Bean
-    public SecurityFilterChain filterChain(org.springframework.security.config.annotation.web.builders.HttpSecurity http,
-                                          JwtAuthenticationFilter jwtFilter) throws Exception {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            JwtAuthenticationFilter jwtFilter
+    ) throws Exception {
 
-        http.csrf(csrf -> csrf.disable());
-        http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http
+            // Disable CSRF (REST API)
+            .csrf(csrf -> csrf.disable())
 
-        http.authorizeHttpRequests(auth -> auth
+            // Stateless session
+            .sessionManagement(sm ->
+                sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            // ❌ Disable default Spring Security login mechanisms
+            .httpBasic(httpBasic -> httpBasic.disable())
+            .formLogin(form -> form.disable())
+
+            // Authorization rules
+            .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**", "/health").permitAll()
                 .anyRequest().authenticated()
-        );
+            )
 
-        http.httpBasic(withDefaults());
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+            // JWT filter
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
