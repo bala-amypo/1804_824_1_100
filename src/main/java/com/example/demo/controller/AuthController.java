@@ -6,7 +6,7 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
-import com.example.demo.service.UserService;   // ✅ CHANGE
+import com.example.demo.service.UserService;  
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,12 +19,12 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final UserService userService;     // ✅ CHANGE
+    private final UserService userService;     
     private final UserRepository userRepository;
 
     public AuthController(AuthenticationManager authenticationManager,
                           JwtUtil jwtUtil,
-                          UserService userService,   // ✅ CHANGE
+                          UserService userService,   
                           UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -41,7 +41,7 @@ public class AuthController {
         u.setPassword(req.getPassword());
         u.setRole("USER");
 
-        // ✅ METHOD NAME FIXED
+        
         User saved = userService.register(u);
 
         Authentication auth = authenticationManager.authenticate(
