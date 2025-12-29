@@ -1,37 +1,33 @@
+// src/main/java/com/example/demo/controller/VendorDocumentController.java
 package com.example.demo.controller;
 
 import com.example.demo.model.VendorDocument;
 import com.example.demo.service.VendorDocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/vendor-documents")
+@RequestMapping("/api/vendor-documents")
+@RequiredArgsConstructor
 public class VendorDocumentController {
+    private final VendorDocumentService vendorDocumentService;
 
-    private final VendorDocumentService service;
-
-    public VendorDocumentController(VendorDocumentService service) {
-        this.service = service;
-    }
-
-    @PostMapping("/upload/{vendorId}/{typeId}")
-    public VendorDocument upload(
-            @PathVariable Long vendorId,
-            @PathVariable Long typeId,
-            @RequestBody VendorDocument document
-    ) {
-        return service.uploadDocument(vendorId, typeId, document);
+    @PostMapping
+    public VendorDocument uploadDocument(
+            @RequestParam Long vendorId,
+            @RequestParam Long typeId,
+            @RequestBody VendorDocument document) {
+        return vendorDocumentService.uploadDocument(vendorId, typeId, document);
     }
 
     @GetMapping("/vendor/{vendorId}")
-    public List<VendorDocument> getByVendor(@PathVariable Long vendorId) {
-        return service.getDocumentsForVendor(vendorId);
+    public List<VendorDocument> getDocumentsForVendor(@PathVariable Long vendorId) {
+        return vendorDocumentService.getDocumentsForVendor(vendorId);
     }
 
     @GetMapping("/{id}")
-    public VendorDocument getOne(@PathVariable Long id) {
-        return service.getDocument(id);
+    public VendorDocument getDocument(@PathVariable Long id) {
+        return vendorDocumentService.getDocument(id);
     }
 }
