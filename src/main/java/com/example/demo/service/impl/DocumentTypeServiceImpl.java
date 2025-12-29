@@ -1,37 +1,36 @@
+// src/main/java/com/example/demo/service/impl/DocumentTypeServiceImpl.java
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.model.DocumentType;
 import com.example.demo.repository.DocumentTypeRepository;
 import com.example.demo.service.DocumentTypeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentTypeServiceImpl implements DocumentTypeService {
+    private final DocumentTypeRepository documentTypeRepository;
 
-    private final DocumentTypeRepository repo;
-
-    public DocumentTypeServiceImpl(DocumentTypeRepository repo) {
-        this.repo = repo;
-    }
-
-    // ✔ matches createDocumentType(DocumentType type)
     @Override
     public DocumentType createDocumentType(DocumentType type) {
-        return repo.save(type);
+        if(documentTypeRepository.existsByTypeName(type.getTypeName())) {
+            throw new ValidationException("Duplicate type name");
+        }
+        return documentTypeRepository.save(type);
     }
 
-    // ✔ matches getAllDocumentTypes()
-    @Override
-    public List<DocumentType> getAllDocumentTypes() {
-        return repo.findAll();
-    }
-
-    // ✔ matches getDocumentType(Long id)
     @Override
     public DocumentType getDocumentType(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("DocumentType not found"));
+        return documentTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("DocumentType not found"));
+    }
+
+    @Override
+    public List<DocumentType> getAllDocumentTypes() {
+        return documentTypeRepository.findAll();
     }
 }

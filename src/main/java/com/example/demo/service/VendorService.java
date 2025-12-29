@@ -1,9 +1,10 @@
+// src/main/java/com/example/demo/service/VendorService.java
 package com.example.demo.service;
-import java.util.List;
-import com.example.demo.model.Vendor;
 
-public interface VendorService 
-{
+import com.example.demo.model.Vendor;
+import java.util.List;
+
+public interface VendorService {
     Vendor createVendor(Vendor vendor);
     Vendor getVendor(Long id);
     List<Vendor> getAllVendors();

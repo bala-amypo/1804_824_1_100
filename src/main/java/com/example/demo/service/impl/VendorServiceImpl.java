@@ -1,24 +1,25 @@
+// src/main/java/com/example/demo/service/impl/VendorServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.ValidationException;
 import com.example.demo.model.Vendor;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class VendorServiceImpl implements VendorService {
-
     private final VendorRepository vendorRepository;
-
-    public VendorServiceImpl(VendorRepository vendorRepository) {
-        this.vendorRepository = vendorRepository;
-    }
 
     @Override
     public Vendor createVendor(Vendor vendor) {
+        if(vendorRepository.existsByVendorName(vendor.getVendorName())) {
+            throw new ValidationException("Duplicate vendor name");
+        }
         return vendorRepository.save(vendor);
     }
 
@@ -28,7 +29,6 @@ public class VendorServiceImpl implements VendorService {
                 .orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
     }
 
-    // ✅ THIS METHOD WAS MISSING
     @Override
     public List<Vendor> getAllVendors() {
         return vendorRepository.findAll();
